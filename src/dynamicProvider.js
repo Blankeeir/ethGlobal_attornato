@@ -1,6 +1,6 @@
 // src/DynamicProvider.js
 import React from 'react';
-import { DynamicContextProvider } from '@dynamic-labs/sdk';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
 
 const DynamicProvider = ({ children }) => {
   return (

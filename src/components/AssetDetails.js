@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import MarketplaceABI from '../abis/Marketplace.json';
 import { useParams } from 'react-router-dom';
-import SignProtocol from '../signProtocol'; // Assume you have a signProtocol.js for integration
+// import SignProtocol from '../signProtocol'; // Assume you have a signProtocol.js for integration
 import { initiateAttestation } from '../signProtocol';
 import { useHistory } from 'react-router-dom';
 

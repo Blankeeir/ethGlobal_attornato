@@ -1,6 +1,6 @@
 // src/components/LandingPage.js
 import React from 'react';
-import { useDynamicContext } from '@dynamic-labs/sdk';
+import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import { useHistory } from 'react-router-dom';

@@ -1,11 +1,11 @@
 // src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom'; // Updated for React Router v6
-import LandingPage from 'components/LandingPage'; // Corrected path
-import Dashboard from 'components/Dashboard';
-import Marketplace from 'components/Marketplace';
-import SellAsset from 'components/SellAsset';
-import AssetDetails from 'components/AssetDetails'; // If you have this component
+import LandingPage from './components/LandingPage.js'; // Corrected path
+import Dashboard from './components/Dashboard.js';
+import Marketplace from './components/MarketPlace.js';
+import SellAsset from './components/SellAsset.js';
+import AssetDetails from './components/AssetDetails.js'; // If you have this component
 // import Attest from './components/Attest'; // If you have this component
 
 const App = () => {

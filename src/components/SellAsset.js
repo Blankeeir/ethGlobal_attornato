@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import MarketplaceABI from '../abis/Marketplace.json';
 import AssetTokenABI from '../abis/AssetToken.json';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Updated hook
 import Web3Modal from 'web3modal';
 import WalletConnectProvider from '@walletconnect/web3-provider';
 
@@ -15,7 +15,7 @@ const SellAsset = () => {
     length: '',
     price: '',
   });
-  const history = useHistory();
+  const navigate = useNavigate(); // Updated hook
 
   const handleChange = (e) => {
     setAssetData({ ...assetData, [e.target.name]: e.target.value });
@@ -47,7 +47,7 @@ const SellAsset = () => {
       const assetTokenContract = new ethers.Contract('YOUR_ASSETTOKEN_CONTRACT_ADDRESS', AssetTokenABI, signer);
 
       // Mint NFT
-      const tx1 = await assetTokenContract.createAssetToken(signer.getAddress(), assetData.image);
+      const tx1 = await assetTokenContract.createAssetToken(await signer.getAddress(), assetData.image);
       const receipt1 = await tx1.wait();
       const tokenId = receipt1.events[0].args.tokenId.toNumber();
 
@@ -64,7 +64,7 @@ const SellAsset = () => {
       await tx2.wait();
 
       alert('Asset listed successfully!');
-      history.push('/marketplace');
+      navigate('/marketplace');
     } catch (error) {
       console.error(error);
       alert('Error listing asset.');

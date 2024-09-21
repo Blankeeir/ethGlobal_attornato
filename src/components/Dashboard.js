@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import MarketplaceABI from '../abis/Marketplace.json';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; // Updated import
 
 const Dashboard = () => {
   const [purchases, setPurchases] = useState([]);
   const [sales, setSales] = useState([]);
   const [verifications, setVerifications] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate(); // Updated hook
 
   const marketplaceAddress = 'YOUR_MARKETPLACE_CONTRACT_ADDRESS';
 
@@ -41,10 +41,10 @@ const Dashboard = () => {
   return (
     <div style={styles.container}>
       <h2>User Dashboard</h2>
-      <button style={styles.navButton} onClick={() => history.push('/marketplace')}>
+      <button style={styles.navButton} onClick={() => navigate('/marketplace')}>
         Explore Marketplace
       </button>
-      <button style={styles.navButton} onClick={() => history.push('/sell')}>
+      <button style={styles.navButton} onClick={() => navigate('/sell')}>
         Sell My Asset
       </button>
 
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 <td>{purchase.seller}</td>
                 <td>{purchase.tokenTransferred.toString()}</td>
                 <td>{ethers.utils.formatEther(purchase.gasFee)}</td>
-                <td>{new Date(purchase.timestamp * 1000).toLocaleString()}</td>
+                <td>{new Date(purchase.timestamp.toNumber() * 1000).toLocaleString()}</td>
                 <td>{purchase.assetName}</td>
                 <td>{purchase.attestationStatus}</td>
                 <td>{purchase.verifyingNode}</td>
@@ -98,7 +98,7 @@ const Dashboard = () => {
                 <td>{sale.buyer}</td>
                 <td>{sale.tokenTransferred.toString()}</td>
                 <td>{ethers.utils.formatEther(sale.gasFee)}</td>
-                <td>{new Date(sale.timestamp * 1000).toLocaleString()}</td>
+                <td>{new Date(sale.timestamp.toNumber() * 1000).toLocaleString()}</td>
                 <td>{sale.assetName}</td>
                 <td>{sale.attestationStatus}</td>
                 <td>{sale.verifyingNode}</td>
@@ -129,7 +129,7 @@ const Dashboard = () => {
                 <td>{verification.trader2}</td>
                 <td>{verification.tokenTransferred.toString()}</td>
                 <td>{ethers.utils.formatEther(verification.gasFee)}</td>
-                <td>{new Date(verification.timestamp * 1000).toLocaleString()}</td>
+                <td>{new Date(verification.timestamp.toNumber() * 1000).toLocaleString()}</td>
                 <td>{verification.assetName}</td>
                 <td>{verification.approved ? 'Approved' : 'Rejected'}</td>
               </tr>
