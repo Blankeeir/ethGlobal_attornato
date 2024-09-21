@@ -2,41 +2,46 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import MarketplaceABI from '../abis/Marketplace.json';
-import { useNavigate } from 'react-router-dom'; // Updated import
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [purchases, setPurchases] = useState([]);
   const [sales, setSales] = useState([]);
   const [verifications, setVerifications] = useState([]);
-  const navigate = useNavigate(); // Updated hook
+  const navigate = useNavigate();
 
-  const marketplaceAddress = 'YOUR_MARKETPLACE_CONTRACT_ADDRESS';
+  const marketplaceAddress = 'YOUR_MARKETPLACE_CONTRACT_ADDRESS'; // Replace with your deployed Marketplace contract address
 
   useEffect(() => {
     const fetchData = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(marketplaceAddress, MarketplaceABI, provider);
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const contract = new ethers.Contract(marketplaceAddress, MarketplaceABI, provider);
 
-        // Fetch Historical Purchases
-        const purchaseFilter = contract.filters.PurchaseEvent();
-        const purchaseEvents = await contract.queryFilter(purchaseFilter);
-        setPurchases(purchaseEvents.map(event => event.args));
+          // Fetch Historical Purchases
+          const purchaseFilter = contract.filters.PurchaseEvent();
+          const purchaseEvents = await contract.queryFilter(purchaseFilter);
+          setPurchases(purchaseEvents.map(event => event.args));
 
-        // Fetch Historical Sales
-        const saleFilter = contract.filters.SaleEvent();
-        const saleEvents = await contract.queryFilter(saleFilter);
-        setSales(saleEvents.map(event => event.args));
+          // Fetch Historical Sales
+          const saleFilter = contract.filters.SaleEvent();
+          const saleEvents = await contract.queryFilter(saleFilter);
+          setSales(saleEvents.map(event => event.args));
 
-        // Fetch Historical Verifications
-        const verificationFilter = contract.filters.VerificationEvent();
-        const verificationEvents = await contract.queryFilter(verificationFilter);
-        setVerifications(verificationEvents.map(event => event.args));
+          // Fetch Historical Verifications
+          const verificationFilter = contract.filters.VerificationEvent();
+          const verificationEvents = await contract.queryFilter(verificationFilter);
+          setVerifications(verificationEvents.map(event => event.args));
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          alert('Failed to fetch dashboard data.');
+        }
       }
     };
 
     fetchData();
-  }, []);
+  }, [marketplaceAddress]);
 
   return (
     <div style={styles.container}>
@@ -148,6 +153,7 @@ const styles = {
   navButton: {
     margin: '10px',
     padding: '10px 20px',
+    cursor: 'pointer',
   },
   section: {
     marginTop: '30px',

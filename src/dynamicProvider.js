@@ -6,8 +6,8 @@ const DynamicProvider = ({ children }) => {
   return (
     <DynamicContextProvider
       settings={{
-        appLogoUrl: 'https://your-app-logo-url.com/logo.png',
-        environmentId: 'YOUR_ENVIRONMENT_ID',
+        appLogoUrl: 'https://your-app-logo-url.com/logo.png', // Replace with your logo URL
+        environmentId: 'YOUR_ENVIRONMENT_ID', // Replace with your actual environment ID
       }}
     >
       {children}

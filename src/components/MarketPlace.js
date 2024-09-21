@@ -2,31 +2,36 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import MarketplaceABI from '../abis/Marketplace.json';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Marketplace = () => {
   const [assets, setAssets] = useState([]);
-  const history = useHistory();
-  const marketplaceAddress = 'YOUR_MARKETPLACE_CONTRACT_ADDRESS';
+  const navigate = useNavigate();
+  const marketplaceAddress = 'YOUR_MARKETPLACE_CONTRACT_ADDRESS'; // Replace with your deployed Marketplace contract address
 
   useEffect(() => {
     const fetchAssets = async () => {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const contract = new ethers.Contract(marketplaceAddress, MarketplaceABI, provider);
-        const assetCount = await contract.assetCounter();
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          const contract = new ethers.Contract(marketplaceAddress, MarketplaceABI, provider);
+          const assetCount = await contract.assetCounter();
 
-        const fetchedAssets = [];
-        for (let i = 0; i < assetCount; i++) {
-          const asset = await contract.assets(i);
-          fetchedAssets.push(asset);
+          const fetchedAssets = [];
+          for (let i = 0; i < assetCount; i++) {
+            const asset = await contract.assets(i);
+            fetchedAssets.push(asset);
+          }
+          setAssets(fetchedAssets);
+        } catch (error) {
+          console.error('Error fetching assets:', error);
+          alert('Failed to fetch marketplace assets.');
         }
-        setAssets(fetchedAssets);
       }
     };
 
     fetchAssets();
-  }, []);
+  }, [marketplaceAddress]);
 
   return (
     <div style={styles.container}>
@@ -37,8 +42,11 @@ const Marketplace = () => {
             <img src={asset.image} alt={asset.name} style={styles.image} />
             <h3>{asset.name}</h3>
             <p>Price: {ethers.utils.formatEther(asset.price)} USDC</p>
-            <p>Attestation Status: {asset.attestationStatus === 0 ? 'Not Open to Attestation' : 'Open to Attestation'}</p>
-            <button onClick={() => history.push(`/asset/${asset.id}`)} style={styles.button}>
+            <p>
+              Attestation Status:{' '}
+              {asset.attestationStatus === 0 ? 'Not Open to Attestation' : 'Open to Attestation'}
+            </p>
+            <button onClick={() => navigate(`/asset/${asset.id}`)} style={styles.button}>
               View Details
             </button>
           </div>
@@ -72,6 +80,7 @@ const styles = {
   button: {
     marginTop: '10px',
     padding: '10px 15px',
+    cursor: 'pointer',
   },
 };
 
